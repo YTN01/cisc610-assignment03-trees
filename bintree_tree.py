@@ -62,24 +62,16 @@ class Tree:
 
         return (parent, current)
 
-    def _leaf_nodes_count(self, current_level):
-        next_level = []
-        for node in current_level:
-            print('processing node: {0}'.format(node.data))
-            if node.left_child is not None:
-                next_level.append(node.left_child)
-            if node.right_child is not None:
-                next_level.append(node.right_child)
-        if not next_level:
-            return len(current_level)
+    def _leaf_nodes_count(self, current_node):
+        if current_node is None:
+            return 0
         else:
-            print('moving to next level')
-            return self._leaf_nodes_count(next_level)
+            if current_node.left_child is None and current_node.right_child is None:
+                return 1
+            return self._leaf_nodes_count(current_node.left_child) + self._leaf_nodes_count(current_node.right_child)
 
     def leaf_nodes_count(self):
-        if self.root_node is None:
-            return 0
-        return self._leaf_nodes_count([self.root_node])
+        return self._leaf_nodes_count(self.root_node)
 
     def _height(self, root):
         if root is None:
